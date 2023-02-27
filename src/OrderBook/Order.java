@@ -1,5 +1,7 @@
+package OrderBook;
+
 public class Order {
-	public String uuid; // Universal ID of the Order
+	public String uuid; // Universal ID of the OrderBook.Order
 	public String orderID; // The ID of the order set by the exchange
 	public String clientID; // The ID of the order set by the one who created/placed the order
 
@@ -13,16 +15,20 @@ public class Order {
 	public long createdTs; // Timestamp for when order was created
 
 	// Chained Constructors
-	public Order(String uuid, String productID, float size, float price,
-	             OrderType type, boolean postOnly, Side side, long timestamp) {
-		this.uuid = uuid;
-		this.orderID = productID;
+	public Order(float price, float size, Side side, long timestamp){
 		this.size = size;
 		this.price = price;
-		this.type = type;
-		this.postOnly = postOnly;
 		this.side = side;
 		this.createdTs = timestamp;
+	}
+
+	public Order(String uuid, String productID, float size, float price,
+	             OrderType type, boolean postOnly, Side side, long timestamp) {
+		this(price, size, side, timestamp);
+		this.uuid = uuid;
+		this.orderID = productID;
+		this.type = type;
+		this.postOnly = postOnly;
 	}
 
 	public Order(String uuid, String productID, float size, float price,

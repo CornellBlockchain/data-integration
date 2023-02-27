@@ -1,17 +1,20 @@
+package OrderBook;
+
 import org.jetbrains.annotations.NotNull;
 
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public class OrderBook {
-	LinkedList<Order> asks;
-	LinkedList<Order> bids;
+	public LinkedList<Order> asks = new LinkedList<>();
+	public LinkedList<Order> bids = new LinkedList<>();
 
-	Cache<String, String> placedOrders = new Cache<>(20000);
-	Cache<String, String> recordedFills = new Cache<>(20000);
+	Cache<String, String> placedOrders = new Cache<String, String>(20000);
+	Cache<String, String> recordedFills = new Cache<String, String>(20000);
 
-	float bestBidPrice;
-	float bestAskPrice;
-	float sittingVolume;
+	public float bestBidPrice = -1; // Negative implies no bid/ask at all
+	public float bestAskPrice = -1;
+	public float sittingVolume = 0;
 
 	// Helpers
 	private void sortedPlace(Order order){
@@ -45,8 +48,9 @@ public class OrderBook {
 		for (int i = 0; i < sideOfBook.size(); i++) {
 			if (sideOfBook.get(i).price == fill.price){
 				if (fill.size < sideOfBook.get(i).size) {
-					Order newOrder = sideOfBook.get(i);
-					newOrder.size -= fill.size;
+					Order newOrder = new Order(fill.price,
+							sideOfBook.get(i).size - fill.size, fill.side,
+							ZonedDateTime.now().toInstant().toEpochMilli());
 					sideOfBook.set(i, newOrder);
 				}
 				else { // Fills entire price level
@@ -55,16 +59,17 @@ public class OrderBook {
 					else
 						bids.remove(i);
 				}
-				// What about slippage?
+				// The exchanges might send fills before the order, we need
+				// to address this
 				return;
 			}
 		}
-		throw new RuntimeException("Fill event didn't fill any sitting orders");
+		throw new RuntimeException("OrderBook.Fill event didn't fill any sitting orders");
 	}
 
 	private void adjustBBO(){
-		bestAskPrice = asks.getFirst().price;
-		bestBidPrice = bids.getFirst().price;
+		bestAskPrice = asks.size() > 0 ? asks.getFirst().price : -1;
+		bestBidPrice = bids.size() > 0 ? bids.getFirst().price : -1;
 	}
 
 	/**
@@ -74,7 +79,7 @@ public class OrderBook {
 	public void placeOrder(@NotNull Order order){
 		if (placedOrders.containsKey(order.orderID))
 			return; // Don't place an order we already placed
-		// Insert Order into proper book
+		// Insert OrderBook.Order into proper book
 		sortedPlace(order);
 		sittingVolume += order.size;
 		adjustBBO();
@@ -84,7 +89,7 @@ public class OrderBook {
 	/**
 	 * Registers fill event on the order book
 	 * WARNING: Will throw if fill event doesn't fill any sitting order
-	 * @param fill - Valid Fill that occured on the current version of the
+	 * @param fill - Valid OrderBook.Fill that occured on the current version of the
 	 *                order book
 	 */
 	public void fillEvent(@NotNull Fill fill){
