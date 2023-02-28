@@ -31,7 +31,7 @@ class testOrderBook {
 	}
 
 	@Test
-	void placeOneAsk2() {
+	void placeOneAskTwo() {
 		// Init and checking start conditions
 		OrderBook testSubject = new OrderBook();
 		assertEquals(0, testSubject.asks.size());
@@ -40,8 +40,8 @@ class testOrderBook {
 		assertEquals(-1f, testSubject.bestBidPrice);
 		assertEquals(0f, testSubject.sittingVolume);
 		//Operation
-		Order newAsk1 = new Order(5.3f, 0.3f, Side.ASK, 1677599362L);
-		testSubject.placeOrder(newAsk1);
+		Order newAsk = new Order(5.3f, 0.3f, Side.ASK, 1677599362L);
+		testSubject.placeOrder(newAsk);
 		//Checking Operation
 		assertEquals(1, testSubject.asks.size());
 		assertEquals(0, testSubject.bids.size());
@@ -77,7 +77,7 @@ class testOrderBook {
 	}
 
 	@Test
-	void placeOneBid2() {
+	void placeOneBidTwo() {
 		// Init and checking start conditions
 		OrderBook testSubject = new OrderBook();
 		assertEquals(0, testSubject.asks.size());
@@ -86,8 +86,8 @@ class testOrderBook {
 		assertEquals(-1f, testSubject.bestBidPrice);
 		assertEquals(0f, testSubject.sittingVolume);
 		//Operation
-		Order newAsk1 = new Order(5.3f, 0.3f, Side.BID, 1677598183L);
-		testSubject.placeOrder(newAsk1);
+		Order newBid = new Order(5.3f, 0.3f, Side.BID, 1677598183L);
+		testSubject.placeOrder(newBid);
 		//Checking Operation
 		assertEquals(0, testSubject.asks.size());
 		assertEquals(1, testSubject.bids.size());
@@ -121,8 +121,8 @@ class testOrderBook {
 		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
 		assertEquals(1.5f, testSubject.sittingVolume);
 		//Operation
-		Order newAsk1 = new Order(5.3f, 0.3f, Side.BID, 1677598183L);
-		testSubject.placeOrder(newAsk1);
+		Order newBid = new Order(5.3f, 0.3f, Side.BID, 1677598183L);
+		testSubject.placeOrder(newBid);
 		//Checking Operation
 		assertEquals(1, testSubject.asks.size());
 		assertEquals(1, testSubject.bids.size());
@@ -156,8 +156,8 @@ class testOrderBook {
 		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
 		assertEquals(1.5f, testSubject.sittingVolume);
 		//Operation
-		Order newAsk1 = new Order(5.3f, 0.3f, Side.ASK, 1677598183L);
-		testSubject.placeOrder(newAsk1);
+		Order newAskOne = new Order(5.3f, 0.3f, Side.ASK, 1677598183L);
+		testSubject.placeOrder(newAskOne);
 		//Checking Operation
 		assertEquals(2, testSubject.asks.size());
 		assertEquals(0, testSubject.bids.size());
