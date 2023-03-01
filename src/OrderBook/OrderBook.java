@@ -1,7 +1,5 @@
 package OrderBook;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -76,7 +74,7 @@ public class OrderBook {
 	 * placeOrder - Will place an order on the order book
 	 * @param order A valid order
 	 */
-	public void placeOrder(@NotNull Order order){
+	public void placeOrder(Order order){
 		if (placedOrders.containsKey(order.orderID))
 			return; // Don't place an order we already placed
 		// Insert OrderBook.Order into proper book
@@ -92,7 +90,7 @@ public class OrderBook {
 	 * @param fill - Valid OrderBook.Fill that occured on the current version of the
 	 *                order book
 	 */
-	public void fillEvent(@NotNull Fill fill){
+	public void fillEvent(Fill fill){
 		if (recordedFills.containsKey(fill.orderID))
 			return; // Don't place an order we already placed
 		sortedFill(fill);
