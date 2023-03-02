@@ -2,6 +2,8 @@ import OrderBook.Order;
 import OrderBook.OrderBook;
 import OrderBook.Side;
 import org.junit.jupiter.api.Test;
+import OrderBook.Fill;
+import OrderBook.OrderType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -167,5 +169,27 @@ class testOrderBook {
 		assertEquals(10.2f, testSubject.bestAskPrice);
 		assertEquals(-1f, testSubject.bestBidPrice);
 		assertEquals(1.8f, testSubject.sittingVolume);
+	}
+
+	@Test
+	void checkBest(){
+		OrderBook testSubject = new OrderBook();
+
+		//Bids:
+		Order newBidOne = new Order(5.3f, 0.3f, Side.BID, 1677598183L);
+		testSubject.placeOrder(newBidOne);
+		Order newBidTwo = new Order(8.3f, 0.7f, Side.BID, 1977598183L);
+		testSubject.placeOrder(newBidTwo);
+		assertEquals(5.0, (double)Math.round(testSubject.bestBidPrice));
+
+		//Asks:
+		Order newAskOne = new Order(5.3f, 0.4f, Side.ASK, 1777598183L);
+		testSubject.placeOrder(newAskOne);
+		Order newAskTwo = new Order(8.3f, 0.2f, Side.ASK, 1877598183L);
+		testSubject.placeOrder(newAskTwo);
+		assertEquals(5.0, (double)Math.round(testSubject.bestAskPrice));
+
+		assertEquals(0.0,(double)Math.round(testSubject.sittingVolume));
+
 	}
 }
