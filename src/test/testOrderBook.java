@@ -63,8 +63,9 @@ class testOrderBook {
 		assertEquals(-1f, testSubject.bestBidPrice);
 		assertEquals(0f, testSubject.sittingVolume);
 		// Operation
-		Order newAsk = new Order(3.39f, 0.25f, Side.BID, 1677541289L);
-		testSubject.placeOrder(newAsk);
+		Order /* newAsk */ newBid = new Order(3.39f, 0.25f, Side.BID, 1677541289L); // Typo Found
+		// The typo does not affect functionality
+		testSubject.placeOrder(newBid);
 		// Checking Operation
 		assertEquals(0, testSubject.asks.size());
 		assertEquals(1, testSubject.bids.size());
@@ -167,5 +168,16 @@ class testOrderBook {
 		assertEquals(10.2f, testSubject.bestAskPrice);
 		assertEquals(-1f, testSubject.bestBidPrice);
 		assertEquals(1.8f, testSubject.sittingVolume);
+	}
+
+	@Test
+	void placeOneSTOPLIMIT() {
+		// Init and checking start conditions
+		OrderBook testSubject = new OrderBook();
+		assertEquals(0, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(-1f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice);
+		assertEquals(0f, testSubject.sittingVolume);
 	}
 }
