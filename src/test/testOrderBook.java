@@ -47,7 +47,7 @@ class testOrderBook {
 		assertEquals(0, testSubject.bids.size());
 		assertEquals(5.3f, testSubject.asks.getFirst().price);
 		assertEquals(0.3f, testSubject.asks.getFirst().size);
-		assertEquals(1677599362L, testSubject.bids.getFirst().createdTs);
+		assertEquals(1677599362L, testSubject.asks.getFirst().createdTs);
 		assertEquals(5.3f, testSubject.bestAskPrice);
 		assertEquals(-1f, testSubject.bestBidPrice);
 		assertEquals(0.3f, testSubject.sittingVolume);
@@ -161,10 +161,10 @@ class testOrderBook {
 		//Checking Operation
 		assertEquals(2, testSubject.asks.size());
 		assertEquals(0, testSubject.bids.size());
-		assertEquals(5.3f, testSubject.asks.getLast().price);
-		assertEquals(0.3f, testSubject.asks.getLast().size);
-		assertEquals(1677598183L, testSubject.bids.getFirst().createdTs);
-		assertEquals(10.2f, testSubject.bestAskPrice);
+		assertEquals(5.3f, testSubject.asks.getFirst().price);
+		assertEquals(0.3f, testSubject.asks.getFirst().size);
+		assertEquals(1677598183L, testSubject.asks.getFirst().createdTs);
+		assertEquals(5.3f, testSubject.bestAskPrice);
 		assertEquals(-1f, testSubject.bestBidPrice);
 		assertEquals(1.8f, testSubject.sittingVolume);
 	}
