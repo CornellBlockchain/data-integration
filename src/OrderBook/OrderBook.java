@@ -16,7 +16,8 @@ public class OrderBook {
 
 	// Helpers
 	private void sortedPlace(Order order){
-		LinkedList<Order> sideOfBook = order.side==Side.ASK ? asks : bids;
+		boolean isAsk = order.side==Side.ASK;
+		LinkedList<Order> sideOfBook = isAsk ? asks : bids;
 		for (int i = 0; i < sideOfBook.size(); i++) {
 			if (sideOfBook.get(i).price == order.price){
 				order.size += sideOfBook.get(i).size;
@@ -27,7 +28,8 @@ public class OrderBook {
 					bids.set(i, order);
 				return;
 			}
-			else if (sideOfBook.get(i).price < order.price){
+			else if (sideOfBook.get(i).price < order.price && !isAsk ||
+					sideOfBook.get(i).price > order.price && isAsk){
 				if (order.side == Side.ASK)
 					asks.add(i,order);
 				else
@@ -75,14 +77,20 @@ public class OrderBook {
 	 * @param order A valid order
 	 */
 	public void placeOrder(Order order){
-		if (placedOrders.containsKey(order.orderID))
+		if (order.orderID != null && placedOrders.containsKey(order.orderID))
 			return; // Don't place an order we already placed
 		// Insert OrderBook.Order into proper book
 		sortedPlace(order);
 		sittingVolume += order.size;
 		adjustBBO();
 		placedOrders.put(order.orderID, order.orderID);
+
+		if (bestBidPrice > bestAskPrice && bestBidPrice != -1 && bestAskPrice != -1) {
+			// NEW ASSERTION, check for crossed orderbook condition where best bid over best ask
+			throw new RuntimeException("Crossed orderbook condition!");
+		}
 	}
+
 
 	/**
 	 * Registers fill event on the order book
