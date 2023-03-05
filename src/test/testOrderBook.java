@@ -1,6 +1,8 @@
 import OrderBook.Order;
 import OrderBook.OrderBook;
 import OrderBook.Side;
+import OrderBook.Fill;
+import OrderBook.OrderType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,6 +56,29 @@ class testOrderBook {
 	}
 
 	@Test
+	void placeOneAskThree(){
+		// Init and checking start conditions
+		OrderBook testSubject = new OrderBook();
+		assertEquals(0, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(-1f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice);
+		assertEquals(0f, testSubject.sittingVolume);
+		// Operation
+		Order newAsk = new Order(24.2f, 3.0f, Side.ASK, 1678050650L);
+		testSubject.placeOrder(newAsk);
+		// Checking Operation
+		assertEquals(1, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(24.2f, testSubject.asks.getLast().price);
+		assertEquals(3.0f, testSubject.asks.getLast().size);
+		assertEquals(1678050650L, testSubject.asks.getLast().createdTs);
+		assertEquals(24.2f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
+		assertEquals(3.0f, testSubject.sittingVolume);
+
+	}
+	@Test
 	void placeOneBid() {
 		// Init and checking start conditions
 		OrderBook testSubject = new OrderBook();
@@ -98,6 +123,30 @@ class testOrderBook {
 		assertEquals(5.3f, testSubject.bestBidPrice);
 		assertEquals(0.3f, testSubject.sittingVolume);
 	}
+	@Test
+	void placeOneBidThree() {
+		// Init and checking start conditions
+		OrderBook testSubject = new OrderBook();
+		assertEquals(0, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(-1f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice);
+		assertEquals(0f, testSubject.sittingVolume);
+		//Operation
+		Order newBid = new Order(24.2f, 3.0f, Side.BID, 1678050650L);
+		testSubject.placeOrder(newBid);
+		//Checking Operation
+		assertEquals(0, testSubject.asks.size());
+		assertEquals(1, testSubject.bids.size());
+		assertEquals(24.2f, testSubject.bids.getFirst().price);
+		assertEquals(3.0f, testSubject.bids.getFirst().size);
+		assertEquals(1678050650L, testSubject.bids.getFirst().createdTs);
+		assertEquals(-1f, testSubject.bestAskPrice);
+		assertEquals(24.2f, testSubject.bestBidPrice);
+		assertEquals(3.0f, testSubject.sittingVolume);
+	}
+
+
 
 	@Test
 	void placeOneAskAndBid() {
@@ -167,5 +216,87 @@ class testOrderBook {
 		assertEquals(5.3f, testSubject.bestAskPrice);
 		assertEquals(-1f, testSubject.bestBidPrice);
 		assertEquals(1.8f, testSubject.sittingVolume);
+	}
+
+
+	@Test
+	void placeTwoAskTwo() {        // Init and checking start conditions
+		OrderBook testSubject = new OrderBook();
+		assertEquals(0, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(-1f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice);
+		assertEquals(0f, testSubject.sittingVolume);
+		// Operation
+		Order newAsk = new Order(10.2f, 1.5f, Side.ASK, 1677539237L);
+		testSubject.placeOrder(newAsk);
+		// Checking Operation
+		assertEquals(1, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(10.2f, testSubject.asks.getFirst().price);
+		assertEquals(1.5f, testSubject.asks.getFirst().size);
+		assertEquals(1677539237L, testSubject.asks.getFirst().createdTs);
+		assertEquals(10.2f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
+		assertEquals(1.5f, testSubject.sittingVolume);
+		// Operation
+		Order newAsk2 = new Order(24.2f, 3.0f, Side.ASK, 1678050650L);
+		testSubject.placeOrder(newAsk2);
+		// Checking Operation
+		assertEquals(2, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(24.2f, testSubject.asks.getLast().price);
+		assertEquals(3.0f, testSubject.asks.getLast().size);
+		assertEquals(1678050650L, testSubject.asks.getLast().createdTs);
+		assertEquals(10.2f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
+		assertEquals(4.5f, testSubject.sittingVolume);
+
+
+	}
+	@Test
+	void placeTwoAskAndFillOne(){
+		// Init and checking start conditions
+		OrderBook testSubject = new OrderBook();
+		assertEquals(0, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(-1f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice);
+		assertEquals(0f, testSubject.sittingVolume);
+		// Operation
+		Order newAsk = new Order(10.2f, 1.5f, Side.ASK, 1677539237L);
+		testSubject.placeOrder(newAsk);
+		// Checking Operation
+		assertEquals(1, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(10.2f, testSubject.asks.getFirst().price);
+		assertEquals(1.5f, testSubject.asks.getFirst().size);
+		assertEquals(1677539237L, testSubject.asks.getFirst().createdTs);
+		assertEquals(10.2f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
+		assertEquals(1.5f, testSubject.sittingVolume);
+		// Operation
+		Order newAsk2 = new Order(24.2f, 3.0f, Side.ASK, 1678050650L);
+		testSubject.placeOrder(newAsk2);
+		// Checking Operation
+		assertEquals(2, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(24.2f, testSubject.asks.getLast().price);
+		assertEquals(3.0f, testSubject.asks.getLast().size);
+		assertEquals(1678050650L, testSubject.asks.getLast().createdTs);
+		assertEquals(10.2f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
+		assertEquals(4.5f, testSubject.sittingVolume);
+		// Operation
+		testSubject.fillEvent(new Fill("IBM", "1", 3.0f, 24.2f, 0.3f, OrderType.MARKET_ORDER, Side.ASK, 1678050650L));
+		// Checking Operation
+		assertEquals(1, testSubject.asks.size());
+		assertEquals(0, testSubject.bids.size());
+		assertEquals(10.2f, testSubject.asks.getFirst().price);
+		assertEquals(1.5f, testSubject.asks.getFirst().size);
+		assertEquals(1677539237L, testSubject.asks.getFirst().createdTs);
+		assertEquals(10.2f, testSubject.bestAskPrice);
+		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
+		assertEquals(1.5f, testSubject.sittingVolume);
 	}
 }
