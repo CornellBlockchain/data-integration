@@ -29,7 +29,7 @@ public class OrderBook {
 				return;
 			}
 			else if (sideOfBook.get(i).price < order.price && !isAsk ||
-					sideOfBook.get(i).price > order.price && isAsk){
+						sideOfBook.get(i).price > order.price && isAsk) {
 				if (order.side == Side.ASK)
 					asks.add(i,order);
 				else
