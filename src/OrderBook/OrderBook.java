@@ -29,7 +29,7 @@ public class OrderBook {
 				return;
 			}
 			else if (sideOfBook.get(i).price < order.price && !isAsk ||
-						sideOfBook.get(i).price > order.price && isAsk){
+						sideOfBook.get(i).price > order.price && isAsk) {
 				if (order.side == Side.ASK)
 					asks.add(i,order);
 				else
@@ -84,7 +84,13 @@ public class OrderBook {
 		sittingVolume += order.size;
 		adjustBBO();
 		placedOrders.put(order.orderID, order.orderID);
+
+		if (bestBidPrice > bestAskPrice && bestBidPrice != -1 && bestAskPrice != -1) {
+			// NEW ASSERTION, check for crossed orderbook condition where best bid over best ask
+			throw new RuntimeException("Crossed orderbook condition!");
+		}
 	}
+
 
 	/**
 	 * Registers fill event on the order book
