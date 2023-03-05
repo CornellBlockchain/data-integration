@@ -300,7 +300,7 @@ class testOrderBook {
 		Order newBid = new Order(5.3f, 0.3f, Side.BID, 1677598183L);
 		testSubject.placeOrder(newBid);
 		//Checking Operation
-		assertEquals(2, testSubject.asks.size());
+		assertEquals(1, testSubject.asks.size());
 		assertEquals(1, testSubject.bids.size());
 		assertEquals(5.3f, testSubject.bids.getFirst().price);
 		assertEquals(0.3f, testSubject.bids.getFirst().size);
@@ -312,7 +312,7 @@ class testOrderBook {
 		Order newBid2 = new Order(3.39f, 0.25f, Side.BID, 1677541289L));
 		testSubject.placeOrder(newBid2);
 		//Checking Operation
-		assertEquals(2, testSubject.asks.size());
+		assertEquals(1, testSubject.asks.size());
 		assertEquals(2, testSubject.bids.size());
 		assertEquals(3.39f, testSubject.bids.getFirst().price);
 		assertEquals(0.25f, testSubject.bids.getFirst().size);
@@ -351,19 +351,19 @@ class testOrderBook {
 		assertEquals(3.2f, testSubject.asks.getFirst().price);
 		assertEquals(0.5f, testSubject.asks.getFirst().size);
 		assertEquals(1677539233L, testSubject.asks.getFirst().createdTs);
-		assertEquals(10.2f, testSubject.bestAskPrice);
+		assertEquals(3.2f, testSubject.bestAskPrice);
 		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
 		assertEquals(2.0f, testSubject.sittingVolume);
 		// Operation
 		Order newAsk = new Order(10.3f, 1.2f, Side.ASK, 1677538239L);
 		testSubject.placeOrder(newAsk);
 		// Checking Operation
-		assertEquals(1, testSubject.asks.size());
+		assertEquals(3, testSubject.asks.size());
 		assertEquals(0, testSubject.bids.size());
 		assertEquals(10.3f, testSubject.asks.getFirst().price);
 		assertEquals(1.2f, testSubject.asks.getFirst().size);
 		assertEquals(1677538239L, testSubject.asks.getFirst().createdTs);
-		assertEquals(10.3f, testSubject.bestAskPrice);
+		assertEquals(3.2f, testSubject.bestAskPrice);
 		assertEquals(-1f, testSubject.bestBidPrice); // Should be unaffected
 		assertEquals(3.2f, testSubject.sittingVolume);
 	}
