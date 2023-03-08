@@ -3,9 +3,10 @@ import OrderBook.OrderBook;
 import OrderBook.Side;
 import OrderBook.OrderType;
 import OrderBook.Fill;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class testOrderBook {
 
